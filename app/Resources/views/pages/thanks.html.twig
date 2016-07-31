@@ -4,24 +4,32 @@
 
 {% endblock %}
 
+{% block meta %}
+
+    {{ include('partials/og-meta.html.twig', { 'encryptedName': encryptedName }) }}
+
+{% endblock %}
+
 {% block body %}
 
     {{ include('partials/facebook-sdk.html.twig') }}
 
     <div class="ui middle aligned center aligned grid">
         <div class="column">
-            <img src="{{ asset('assets/images/logo.png') }}" class="logo image">
-            <div class="ui divider"></div>
-            <h3 class="ui header">
-                {{ personName }} îți mulțumim pentru donație
-            </h3>
 
-            <img src="{{ encryptedName }}/image" alt="certificate" class="diploma image">
+            {{ include('partials/header.html.twig', {
+                'personName': personName,
+                'message':'îți mulțumim pentru donație'
+            })}}
+            <img src="{{ path('image', {'encryptedName': encryptedName }) }}" alt="certificate" class="certificat image">
 
-            <p><a href="{{ asset(encryptedName) }}">link permanent al diplomei</a></p>
+            <p><a href="{{ path('imageCertificate', {'encryptedName': encryptedName }) }}">link permanent al certificatului</a></p>
+
+            <div>
+                <a href="#" class="ui button orange">Descarcă</a>
+            </div>
 
             {{ include('partials/facebook-share.html.twig', { 'encryptedName': encryptedName }) }}
-
 
         </div>
     </div>
@@ -46,8 +54,11 @@
         .ui.header {
             margin-top: 14px;
         }
-        .diploma.image {
+        .certificat.image {
             width: 100%;
+        }
+        .fb-share-button {
+            margin-top: 5px;
         }
     </style>
 

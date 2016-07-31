@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Route("/unirea-certificat")
+ */
 class DefaultController extends Controller
 {
     /**
@@ -62,13 +65,16 @@ class DefaultController extends Controller
     {
         $personName = base64_decode($encryptedName);
 
-        $image = imagecreatefromjpeg('assets/images/certificate.jpg');
-        $color = imagecolorallocate($image, 255, 0, 0);
-        $font = 'assets/fonts/ShadedLarch.ttf';
+        $image = imagecreatefromjpeg('assets/images/certificat.jpg');
+        $color = imagecolorallocate($image, 43, 59, 75);
+        $font = 'assets/fonts/Lighthouse.ttf';
 
-        $size = 100;
-        $x = 300;
-        $y = 300;
+        $size = 125;
+
+        $box = imagettfbbox($size, 0, $font, $personName);
+
+        $x = $box[0] + (imagesx($image) / 2) - ($box[4] / 2);
+        $y = 770;
 
         /**
          * Write text to image
@@ -89,6 +95,4 @@ class DefaultController extends Controller
 
         return $response;
     }
-
-
 }
