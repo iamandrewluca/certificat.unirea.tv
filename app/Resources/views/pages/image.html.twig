@@ -64,4 +64,10 @@
 
 {% block javascripts %}
 
+    <script>
+        if (location.href.toString().endsWith('redirect=true')) {
+            location.href = "http://unirea.tv";
+        }
+    </script>
+
 {% endblock %}

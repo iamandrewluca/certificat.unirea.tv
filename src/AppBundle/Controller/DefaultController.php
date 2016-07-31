@@ -13,8 +13,10 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      * @Method("GET")
+     * @return Response
+     * @internal param Request $request
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return $this->render('pages/index.html.twig');
     }
@@ -22,6 +24,8 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      * @Method("POST")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexActionPost(Request $request)
     {
@@ -42,6 +46,9 @@ class DefaultController extends Controller
     /**
      * @Route("/{encryptedName}/", name="imageCertificate")
      * @Method("GET")
+     * @param $encryptedName
+     * @return Response
+     * @internal param Request $request
      */
     public function imageCertificateArticle($encryptedName)
     {
@@ -56,6 +63,8 @@ class DefaultController extends Controller
     /**
      * @Route("/{encryptedName}/image/", name="image")
      * @Method("GET")
+     * @param $encryptedName
+     * @return Response
      */
     public function imageCertificate($encryptedName)
     {
@@ -66,6 +75,8 @@ class DefaultController extends Controller
     /**
      * @Route("/{encryptedName}/download/", name="download")
      * @Method("GET")
+     * @param $encryptedName
+     * @return Response
      */
     public function imageDownload($encryptedName)
     {
@@ -73,16 +84,24 @@ class DefaultController extends Controller
         return $this->getImageResponse($personName, "full");
     }
 
-    private function getImageResponse($personName, $size = "normal")
+    /**
+     * @param string $personName
+     * @param string $size
+     * @return Response
+     */
+    private function getImageResponse($personName = "UNIREA.TV", $size = "normal")
     {
         $image = imagecreatefromjpeg('assets/images/certificat.jpg');
+
         $color = imagecolorallocate($image, 43, 59, 75);
         $font = 'assets/fonts/Lighthouse.ttf';
+        $fontSize = 125;
 
-        $size = 125;
+        /**
+         * Calculate size of text with this font (x,y,w,h)
+         */
 
-        $box = imagettfbbox($size, 0, $font, $personName);
-
+        $box = imagettfbbox($fontSize, 0, $font, $personName);
         $x = $box[0] + (imagesx($image) / 2) - ($box[4] / 2);
         $y = 770;
 
@@ -90,7 +109,18 @@ class DefaultController extends Controller
          * Write text to image
          */
 
-        imagettftext($image, $size, 0, $x, $y, $color, $font, $personName);
+        imagettftext($image, $fontSize, 0, $x, $y, $color, $font, $personName);
+
+        /**
+         * Resize image if needed
+         */
+
+        if ($size == "normal") {
+            $newImage = imagescale($image, 600);
+            imagedestroy($image);
+        } else {
+            $newImage = $image;
+        }
 
         /**
          * Send image to response
@@ -100,11 +130,9 @@ class DefaultController extends Controller
         $response->headers->set('Content-Type', 'image/png');
         $response->sendHeaders();
 
-        imagepng($image, null);
-        imagedestroy($image);
+        imagepng($newImage, null);
+        imagedestroy($newImage);
 
         return $response;
-
-        return new Response();
     }
 }
