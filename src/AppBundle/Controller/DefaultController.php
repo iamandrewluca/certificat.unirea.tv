@@ -37,14 +37,13 @@ class DefaultController extends Controller
 
         $encryptedName = base64_encode($personName);
 
-        return $this->render('pages/thanks.html.twig', array(
-            'personName' => $personName,
+        return $this->redirectToRoute('imageCertificate', array(
             'encryptedName' => $encryptedName
         ));
     }
 
     /**
-     * @Route("/{encryptedName}/", name="imageCertificate")
+     * @Route("/{encryptedName}", name="imageCertificate")
      * @Method("GET")
      */
     public function imageCertificateArticle($encryptedName)
@@ -58,13 +57,27 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{encryptedName}/image/", name="image")
+     * @Route("/{encryptedName}/image", name="image")
      * @Method("GET")
      */
     public function imageCertificate($encryptedName)
     {
         $personName = base64_decode($encryptedName);
+        return $this->getImageResponse($personName);
+    }
 
+    /**
+     * @Route("/{encryptedName}/download", name="download")
+     * @Method("GET")
+     */
+    public function imageDownload($encryptedName)
+    {
+        $personName = base64_decode($encryptedName);
+        return $this->getImageResponse($personName, "full");
+    }
+
+    private function getImageResponse($personName, $size = "normal")
+    {
         $image = imagecreatefromjpeg('assets/images/certificat.jpg');
         $color = imagecolorallocate($image, 43, 59, 75);
         $font = 'assets/fonts/Lighthouse.ttf';
@@ -94,5 +107,7 @@ class DefaultController extends Controller
         imagedestroy($image);
 
         return $response;
+
+        return new Response();
     }
 }

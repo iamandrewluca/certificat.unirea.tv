@@ -24,7 +24,7 @@
             <img src="{{ path('image', {'encryptedName': encryptedName }) }}" alt="certificate" class="certificat image">
 
             <div>
-                <a href="#" class="ui button orange">Descarcă</a>
+                <a href="{{ path('download', { 'encryptedName': encryptedName }) }}" class="ui button orange" download="certificat.png">Descarcă</a>
             </div>
 
             {{ include('partials/facebook-share.html.twig', { 'encryptedName': encryptedName }) }}
