@@ -26,6 +26,12 @@ class DefaultController extends Controller
     public function indexActionPost(Request $request)
     {
         $personName = $request->get('name');
+
+        // TODO: Name Validation
+        if (strlen($personName) > 32) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $encryptedName = base64_encode($personName);
 
         return $this->render('pages/thanks.html.twig', array(
@@ -54,8 +60,6 @@ class DefaultController extends Controller
      */
     public function imageCertificate($encryptedName)
     {
-        // TODO: Name Validation
-
         $personName = base64_decode($encryptedName);
 
         $image = imagecreatefromjpeg('assets/images/certificate.jpg');
