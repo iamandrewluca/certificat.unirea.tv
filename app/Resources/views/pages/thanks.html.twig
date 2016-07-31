@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    {{ include('partials/facebook-sdk.html.twig') }}
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <img src="{{ asset('assets/images/logo.png') }}" class="logo image">
+            <div class="ui divider"></div>
+            <h3 class="ui header">
+                {{ personName }} îți mulțumim pentru donație
+            </h3>
+
+            <img src="{{ encryptedName }}/image" alt="certificate" class="diploma image">
+
+            <p><a href="{{ asset(encryptedName) }}">link permanent al diplomei</a></p>
+
+            {{ include('partials/facebook-share.html.twig', { 'encryptedName': encryptedName }) }}
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        .logo.image {
+            margin-top: -100px;
+        }
+        .column {
+            max-width: 600px;
+        }
+        .ui.header {
+            margin-top: 14px;
+        }
+        .diploma.image {
+            width: 100%;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

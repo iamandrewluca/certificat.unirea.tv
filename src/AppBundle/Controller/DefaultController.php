@@ -16,7 +16,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('default/index.html.twig');
+        return $this->render('pages/index.html.twig');
     }
 
     /**
@@ -28,7 +28,7 @@ class DefaultController extends Controller
         $personName = $request->get('name');
         $encryptedName = base64_encode($personName);
 
-        return $this->render('default/thanks.html.twig', array(
+        return $this->render('pages/thanks.html.twig', array(
             'personName' => $personName,
             'encryptedName' => $encryptedName
         ));
@@ -42,9 +42,9 @@ class DefaultController extends Controller
     {
         $personName = base64_decode($encryptedName);
 
-        return $this->render('default/image.html.twig', array(
-           'personName' => $personName,
-            'certificateImgUrl' => '/' . $encryptedName . '/image'
+        return $this->render('pages/image.html.twig', array(
+            'personName' => $personName,
+            'encryptedName' => $encryptedName
         ));
     }
 

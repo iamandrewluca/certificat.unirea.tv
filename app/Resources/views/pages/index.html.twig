@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <img src="{{ asset('assets/images/logo.png') }}" class="image">
+            <div class="ui divider"></div>
+            <h3 class="ui header">
+                meriti diploma de donator
+            </h3>
+            <form class="ui large form" method="post">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="name" placeholder="Numele">
+                        </div>
+                    </div>
+                    <div class="ui fluid large teal submit button">Ridica diploma</div>
+                </div>
+
+                <div class="ui error message"></div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        $('.ui.form').form({
+            fields: {
+                name: {
+                    identifier: 'name',
+                    rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter your name'
+                        }
+                    ]
+                }
+            }
+        })
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        .image {
+            margin-top: -100px;
+        }
+        .column {
+            max-width: 450px;
+        }
+        .ui.header {
+            margin-top: 14px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
