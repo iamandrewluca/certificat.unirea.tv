@@ -91,11 +91,19 @@ class DefaultController extends Controller
      */
     private function getImageResponse($personName = "UNIREA.TV", $size = "normal")
     {
-        $image = imagecreatefromjpeg('assets/images/certificat.jpg');
+        $image = null;
 
-        $color = imagecolorallocate($image, 43, 59, 75);
+        if ($size == 'normal') {
+            $image = imagecreatefromjpeg('assets/images/certificat-small.jpg');
+            $fontSize = 35;
+            $y = 225;
+        } else {
+            $image = imagecreatefromjpeg('assets/images/certificat.jpg');
+            $fontSize = 125;
+            $y = 770;
+        }
+
         $font = 'assets/fonts/Lighthouse.ttf';
-        $fontSize = 125;
 
         /**
          * Calculate size of text with this font (x,y,w,h)
@@ -103,24 +111,12 @@ class DefaultController extends Controller
 
         $box = imagettfbbox($fontSize, 0, $font, $personName);
         $x = $box[0] + (imagesx($image) / 2) - ($box[4] / 2);
-        $y = 770;
 
         /**
          * Write text to image
          */
-
+        $color = imagecolorallocate($image, 43, 59, 75);
         imagettftext($image, $fontSize, 0, $x, $y, $color, $font, $personName);
-
-        /**
-         * Resize image if needed
-         */
-
-        if ($size == "normal") {
-            $newImage = imagescale($image, 600);
-            imagedestroy($image);
-        } else {
-            $newImage = $image;
-        }
 
         /**
          * Send image to response
@@ -130,8 +126,8 @@ class DefaultController extends Controller
         $response->headers->set('Content-Type', 'image/png');
         $response->sendHeaders();
 
-        imagepng($newImage, null);
-        imagedestroy($newImage);
+        imagepng($image, null);
+        imagedestroy($image);
 
         return $response;
     }
