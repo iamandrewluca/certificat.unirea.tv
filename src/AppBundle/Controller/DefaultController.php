@@ -16,7 +16,22 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return new Response("form");
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/")
+     * @Method("POST")
+     */
+    public function indexActionPost(Request $request)
+    {
+        $personName = $request->get('name');
+        $encryptedName = base64_encode($personName);
+
+        return $this->render('default/thanks.html.twig', array(
+            'personName' => $personName,
+            'encryptedName' => $encryptedName
+        ));
     }
 
     /**
@@ -27,7 +42,10 @@ class DefaultController extends Controller
     {
         $personName = base64_decode($encryptedName);
 
-        return new Response("post for" . $personName);
+        return $this->render('default/image.html.twig', array(
+           'personName' => $personName,
+            'certificateImgUrl' => '/' . $encryptedName . '/image'
+        ));
     }
 
     /**
@@ -36,9 +54,36 @@ class DefaultController extends Controller
      */
     public function imageCertificate($encryptedName)
     {
+        // TODO: Name Validation
+
         $personName = base64_decode($encryptedName);
 
-        return new Response("image for" . $personName);
+        $image = imagecreatefromjpeg('assets/images/certificate.jpg');
+        $color = imagecolorallocate($image, 255, 0, 0);
+        $font = 'assets/fonts/ShadedLarch.ttf';
+
+        $size = 100;
+        $x = 300;
+        $y = 300;
+
+        /**
+         * Write text to image
+         */
+
+        imagettftext($image, $size, 0, $x, $y, $color, $font, $personName);
+
+        /**
+         * Send image to response
+         */
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'image/png');
+        $response->sendHeaders();
+
+        imagepng($image, null);
+        imagedestroy($image);
+
+        return $response;
     }
 
 
