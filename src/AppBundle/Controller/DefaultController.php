@@ -8,9 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route("/unirea-certificat")
- */
 class DefaultController extends Controller
 {
     /**
@@ -43,7 +40,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{encryptedName}", name="imageCertificate")
+     * @Route("/{encryptedName}/", name="imageCertificate")
      * @Method("GET")
      */
     public function imageCertificateArticle($encryptedName)
@@ -57,7 +54,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{encryptedName}/image", name="image")
+     * @Route("/{encryptedName}/image/", name="image")
      * @Method("GET")
      */
     public function imageCertificate($encryptedName)
@@ -67,7 +64,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{encryptedName}/download", name="download")
+     * @Route("/{encryptedName}/download/", name="download")
      * @Method("GET")
      */
     public function imageDownload($encryptedName)
